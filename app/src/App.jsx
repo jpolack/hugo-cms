@@ -1,15 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import reducers from './_reducers';
+import middlewares from './_middlewares';
 
 import Home from './Home';
 import Repo from './Repo';
 import authCallback from './Auth/authCallback';
 import authenticated from './Auth/authenticated';
 
-import createStore from './_reducers';
-
-const store = createStore();
+const store = createStore(reducers, composeWithDevTools(middlewares));
 
 function App() {
   return (

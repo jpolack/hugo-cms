@@ -1,10 +1,10 @@
-import { createStore, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import authReducer from './auth';
 import loadReducer from './load';
 
-const createApplicationStore = () => createStore(combineReducers({
+const store = combineReducers({
   authenticationState: authReducer,
   loadState: loadReducer,
-}));
+});
 
-export default createApplicationStore;
+export default store;

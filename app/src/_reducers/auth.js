@@ -1,6 +1,6 @@
 const auth = (state = {}, action) => {
   switch (action.type) {
-    case 'AUTHENTICATE':
+    case 'AUTHENTICATED':
       return {
         ...state,
         accessToken: action.accessToken,

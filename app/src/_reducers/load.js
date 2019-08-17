@@ -1,14 +1,31 @@
-const load = (state = {}, action) => {
+const initialState = {
+  userData: {},
+  repoData: [],
+  repoDetailData: {
+    files: [],
+  },
+};
+
+const load = (state = initialState, action) => {
   switch (action.type) {
-    case 'USERDATA':
+    case 'FETCHED_USERDATA':
       return {
         ...state,
         userData: action.userData,
       };
-    case 'REPODATA':
+    case 'FETCHED_REPODATA':
       return {
         ...state,
         repoData: action.repoData,
+      };
+    case 'FETCHED_REPODETAILDATA':
+      return {
+        ...state,
+        repoDetailData: {
+          name: action.repoName,
+          path: action.path,
+          files: action.repoDetailData,
+        },
       };
     default:
       return state;

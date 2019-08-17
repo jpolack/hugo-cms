@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
@@ -7,24 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Icon from '@material-ui/core/Icon';
-
-async function loadRepoFiles(accessToken, repo, subpath) {
-  const replacer = subpath
-    ? `/${subpath}`
-    : '';
-
-  const url = repo.contents_url.replace(/\/\{\+path\}/i, replacer);
-  const authorizationHeader = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const repoResult = await fetch(url, authorizationHeader);
-  const repoData = await repoResult.json();
-
-  return repoData;
-}
+import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
 
 function renderIcon(type) {
   switch (type) {
@@ -44,24 +27,15 @@ function renderIcon(type) {
 }
 
 function Repo({
-  authenticationState, loadState, history, match,
+  authenticationState, loadState, history, match, dispatch,
 }) {
   if (!match.params.name) {
     return <Redirect to="/" />;
   }
 
-  const [repoFiles, setRepoFiles] = useState([]);
-
   useEffect(() => {
-    const loadAndSet = async () => {
-      const foundRepo = loadState.repoData.find((repo) => repo.name === match.params.name);
-      const data = await loadRepoFiles(authenticationState.accessToken, foundRepo, match.params.path);
-      setRepoFiles(data);
-    };
-    loadAndSet();
+    dispatch(FETCH_REPODETAILDATA(match.params.name, match.params.path));
   }, [match.params.path]);
-
-  console.log('repoFiles', repoFiles);
 
   return (
     <>
@@ -71,7 +45,7 @@ function Repo({
         {match.params.name}
       </Typography>
       <List>
-        {repoFiles.map((file) => (
+        {loadState.repoDetailData.files.map((file) => (
           <ListItem
             button
             key={file.name}
