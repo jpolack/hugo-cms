@@ -4,6 +4,7 @@ const initialState = {
   repoDetailData: {
     files: [],
   },
+  fileData: {},
 };
 
 const load = (state = initialState, action) => {
@@ -26,6 +27,11 @@ const load = (state = initialState, action) => {
           path: action.path,
           files: action.repoDetailData,
         },
+      };
+    case 'FETCHED_FILEDATA':
+      return {
+        ...state,
+        fileData: action.fileData,
       };
     default:
       return state;

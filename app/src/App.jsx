@@ -11,6 +11,7 @@ import Home from './Home';
 import Repo from './Repo';
 import authCallback from './Auth/authCallback';
 import authenticated from './Auth/authenticated';
+import FileView from './File';
 
 const store = createStore(reducers, composeWithDevTools(middlewares));
 
@@ -20,6 +21,7 @@ function App() {
       <Provider store={store}>
         <Route path="/" exact component={authenticated(Home)} />
         <Route path="/repo/:name?/:path*" component={authenticated(Repo)} />
+        <Route path="/file/:name" component={authenticated(FileView)} />
         <Route path="/auth" component={authCallback} />
       </Provider>
     </Router>

@@ -18,7 +18,9 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
+    "simplemde": "^1.11.2",
     "webpack": "^4.39.2",
+    "redux-devtools-extension": "^2.13.8",
     "webpack-dev-middleware": "^3.7.0"
   },
   "scripts": {
@@ -36,7 +38,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "redux-devtools-extension": "^2.13.8",
     "webpack-cli": "^3.3.6"
   }
 }

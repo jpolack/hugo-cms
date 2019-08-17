@@ -9,6 +9,32 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Icon from '@material-ui/core/Icon';
 import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
 
+const folderWhiteList = [
+  /^content/,
+];
+const fileWhiteList = [
+  /^content\/.*\.md/i,
+];
+function filterView(file) {
+  if (file.type === 'dir') {
+    return folderWhiteList.some((regex) => regex.test(file.path));
+  }
+  if (file.type === 'file') {
+    return fileWhiteList.some((regex) => regex.test(file.path));
+  }
+  return false;
+}
+
+function handleClick(file, history, match) {
+  if (file.type === 'dir') {
+    history.push(`/repo/${match.params.name}/${file.path}`);
+    return;
+  }
+  if (file.type === 'file') {
+    history.push(`/file/${file.name}`);
+  }
+}
+
 function renderIcon(type) {
   switch (type) {
     case 'file':
@@ -45,24 +71,20 @@ function Repo({
         {match.params.name}
       </Typography>
       <List>
-        {loadState.repoDetailData.files.map((file) => (
-          <ListItem
-            button
-            key={file.name}
-            onClick={
-              file.type === 'dir'
-                ? () => {
-                  history.push(`/repo/${match.params.name}/${file.path}`);
-                }
-                : () => {}
-            }
-          >
-            <ListItemIcon>
-              {renderIcon(file.type)}
-            </ListItemIcon>
-            <ListItemText primary={file.name} />
-          </ListItem>
-        ))}
+        {loadState.repoDetailData.files
+          .filter(filterView)
+          .map((file) => (
+            <ListItem
+              button
+              key={file.name}
+              onClick={() => handleClick(file, history, match)}
+            >
+              <ListItemIcon>
+                {renderIcon(file.type)}
+              </ListItemIcon>
+              <ListItemText primary={file.name} />
+            </ListItem>
+          ))}
       </List>
     </>
   );
