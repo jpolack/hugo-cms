@@ -28,7 +28,7 @@ function Home({
         Select a repository
       </Typography>
       <List>
-        {loadState.repoData.map((repo) => (
+        {loadState.repoData.repositories.map((repo) => (
           <ListItem button key={repo.name} onClick={() => history.push(`/repo/${repo.name}`)}>
             <ListItemText primary={repo.name} />
           </ListItem>

@@ -25,7 +25,7 @@ const customMiddleWare = (store) => (next) => async (action) => {
   }
   const state = store.getState();
 
-  const foundRepo = state.loadState.repoData.find((repo) => repo.name === action.repoName);
+  const foundRepo = state.loadState.repoData.repositories.find((repo) => repo.name === action.repoName);
 
   const repoDetailData = await fetchRepoDetailData(state.authenticationState.accessToken, foundRepo.contents_url, action.path);
   next(FETCHED_REPODETAILDATA(action.repoName, action.path, repoDetailData));

@@ -1,12 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux'
 
-import AuthProceed from './authProceed';
+function AuthHOC(Component) {
+  const AuthenticationComponent = (props) => {
+    const { authenticationState } = props
+    console.log("authenticationState", authenticationState)
 
-function AuthHOC(component) {
-  return () => {
-    const accessToken = localStorage.getItem('HUGO-CMS-accessToken');
-
-    if (!accessToken) {
+    if (!authenticationState || !authenticationState.accessToken) {
       return (
         <>
           <a href="https://github.com/login/oauth/authorize?client_id=a4cb4f76e6d024f070f6&redirect_uri=http://localhost:3000/token&scope=repo">Login with GitHub</a>
@@ -14,9 +14,10 @@ function AuthHOC(component) {
       );
     }
 
-    return <AuthProceed Component={component} accessToken={accessToken} />;
+    return <Component {...props} />;
   };
+  
+  return connect(state => state)(AuthenticationComponent)
 }
-
 
 export default AuthHOC;

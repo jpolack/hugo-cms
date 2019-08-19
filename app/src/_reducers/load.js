@@ -1,6 +1,8 @@
 const initialState = {
   userData: {},
-  repoData: [],
+  repoData: {
+    repositories: []
+  },
   repoDetailData: {
     files: [],
   },
@@ -12,17 +14,30 @@ const load = (state = initialState, action) => {
     case 'FETCHED_USERDATA':
       return {
         ...state,
-        userData: action.userData,
+        userData: {
+          meta:{
+            lastUpdate: Date.now() 
+          },
+          ...action.userData
+        },
       };
     case 'FETCHED_REPODATA':
       return {
         ...state,
-        repoData: action.repoData,
+        repoData: {
+          meta: {
+            lastUpdate: Date.now()
+          },
+          repositories: action.repoData,
+        }
       };
     case 'FETCHED_REPODETAILDATA':
       return {
         ...state,
         repoDetailData: {
+          meta: {
+            lastUpdate: Date.now()
+          },
           name: action.repoName,
           path: action.path,
           files: action.repoDetailData,
@@ -31,7 +46,12 @@ const load = (state = initialState, action) => {
     case 'FETCHED_FILEDATA':
       return {
         ...state,
-        fileData: action.fileData,
+        fileData: {
+          meta: {
+            lastUpdate: Date.now()
+          },
+          ...action.fileData
+        },
       };
     default:
       return state;

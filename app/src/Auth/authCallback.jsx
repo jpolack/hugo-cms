@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import queryString from 'query-string';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { AUTHENTICATED } from '../_actions/AUTH';
 
 function Auth({ location, dispatch }) {
   const { accessToken } = queryString.parse(location.search);
@@ -12,7 +13,7 @@ function Auth({ location, dispatch }) {
   }
 
   useEffect(() => {
-    localStorage.setItem('HUGO-CMS-accessToken', accessToken);
+    dispatch(AUTHENTICATED(accessToken))
   }, []);
 
   return (
