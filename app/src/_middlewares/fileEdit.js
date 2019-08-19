@@ -1,0 +1,42 @@
+import base64 from 'base-64';
+import utf8 from 'utf8';
+import { PUSH_FILEEDIT, PUSHED_FILEEDIT } from '../_actions/FILEEDIT';
+
+const pushFileData = async (accessToken, url, newContent, oldSha, fileName) => {
+  const fileResult = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      message: `Updating ${fileName}`,
+      content: newContent,
+      sha: oldSha,
+    }),
+  });
+  const fileData = await fileResult.json();
+  return fileData;
+};
+
+const customMiddleWare = (store) => (next) => async (action) => {
+  if (action.type !== PUSH_FILEEDIT().type) {
+    next(action);
+    return;
+  }
+
+  const state = store.getState();
+
+  const file = state.loadState.fileData;
+
+  const metaContent = `---\ntitle: ${JSON.stringify(action.metaData.title)}\ndate: ${action.metaData.date}\ndraft: ${action.metaData.draft}\nweight: ${action.metaData.weight}\ntags: ${action.metaData.tags}\n---\n\n`;
+
+  const content = metaContent + action.fileContent;
+
+  next(action);
+
+  await pushFileData(state.authenticationState.accessToken, file.url, base64.encode(utf8.encode(content)), file.sha, file.name);
+
+  next(PUSHED_FILEEDIT());
+};
+
+export default customMiddleWare;

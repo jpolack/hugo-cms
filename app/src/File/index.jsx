@@ -2,13 +2,13 @@ import React, { useLayoutEffect, useEffect, useState } from 'react';
 import SimpleMDE from 'simplemde';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import base64 from 'base-64';
+import utf8 from 'utf8';
 
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { FETCH_FILEDATA } from '../_actions/FILEDATA';
-
-function b64DecodeUnicode(str) {
-  return decodeURIComponent(Array.prototype.map.call(atob(str), (c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
-}
+import { PUSH_FILEEDIT } from '../_actions/FILEEDIT';
 
 function splitMetaAndContent(decodedContent) {
   const match = decodedContent.match(/---(\n.*)*---\n\n/);
@@ -20,11 +20,29 @@ function splitMetaAndContent(decodedContent) {
       title: metaData.match(/title:\s?"(.*)"/)[1],
       date: metaData.match(/date:\s?(.*)/)[1],
       draft: metaData.match(/draft:\s?(.*)/)[1],
+      weight: metaData.match(/weight:\s?([0-9]+)/)[1],
       tags: metaData.match(/tags:\s?(\[.*\])/)[1],
     },
     content: decodedContent.replace(/---(\n.*)*---\n\n/, ''),
   };
 }
+
+const getEditor = (() => {
+  let editor;
+
+  const construct = () => {
+    if (!editor) {
+      editor = new SimpleMDE({
+        element: document.getElementById('fileEdit'),
+        spellChecker: false,
+      });
+    }
+
+    return editor;
+  };
+
+  return construct;
+})();
 
 function FileView({ dispatch, match, loadState }) {
   useEffect(() => {
@@ -35,17 +53,15 @@ function FileView({ dispatch, match, loadState }) {
     title: '',
     date: '',
     draft: '',
+    weight: '',
     tags: '',
   });
 
   useLayoutEffect(() => {
-    const mde = new SimpleMDE({
-      element: document.getElementById('fileEdit'),
-      spellChecker: false,
-    });
+    const mde = getEditor();
 
     if (loadState.fileData.content) {
-      const decodedContent = b64DecodeUnicode(loadState.fileData.content);
+      const decodedContent = utf8.decode(base64.decode(loadState.fileData.content));
       const { meta: parsedMetaData, content } = splitMetaAndContent(decodedContent);
       setMeta(parsedMetaData);
       mde.value(content);
@@ -55,7 +71,6 @@ function FileView({ dispatch, match, loadState }) {
       mde.toTextArea();
     };
   }, [loadState.fileData.content]);
-  console.log('meta', meta);
 
   return (
     <>
@@ -71,6 +86,11 @@ function FileView({ dispatch, match, loadState }) {
       />
       <TextField
         fullWidth
+        label="Weight"
+        value={meta.weight}
+      />
+      <TextField
+        fullWidth
         label="Draft"
         value={meta.draft}
       />
@@ -80,6 +100,9 @@ function FileView({ dispatch, match, loadState }) {
         value={meta.tags}
       />
       <textarea id="fileEdit" />
+      <Button onClick={() => dispatch(PUSH_FILEEDIT(getEditor().value(), meta))}>
+        Send
+      </Button>
     </>
   );
 }
