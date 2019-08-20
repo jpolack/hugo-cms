@@ -13,13 +13,15 @@ import authCallback from './Auth/authCallback';
 import authenticated from './Auth/authenticated';
 import FileView from './File';
 
-const oldState = JSON.parse(localStorage.getItem('HUGO-CMS-state')) || {
-  authenticationState: undefined,
-  loadState: undefined,
-};
+let oldState = JSON.parse(localStorage.getItem('HUGO-CMS-state'));
 
 if (oldState) {
   console.log('Reloaded old state');
+} else {
+  oldState = {
+    authenticationState: undefined,
+    loadState: undefined,
+  };
 }
 
 const store = createStore(reducers, oldState, composeWithDevTools(middlewares));
