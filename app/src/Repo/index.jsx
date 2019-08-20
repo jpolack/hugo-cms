@@ -33,7 +33,7 @@ function handleClick(file, history, match) {
     return;
   }
   if (file.type === 'file') {
-    history.push(`/file/${file.name}`);
+    history.push(`/file/${match.params.name}/${file.path}/edit`);
   }
 }
 
@@ -72,7 +72,7 @@ function Repo({
         {' '}
         {match.params.name}
       </Typography>
-      <IconButton onClick={()=>history.goBack()}>
+      <IconButton onClick={() => history.goBack()}>
         <Icon>keyboard_backspace</Icon>
       </IconButton>
       <List>

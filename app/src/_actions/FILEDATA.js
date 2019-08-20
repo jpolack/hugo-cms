@@ -1,6 +1,6 @@
-export const FETCH_FILEDATA = (fileName) => ({
+export const FETCH_FILEDATA = (filePath) => ({
   type: 'FETCH_FILEDATA',
-  name: fileName,
+  filePath: filePath,
 });
 
 export const FETCHED_FILEDATA = (fileData) => ({

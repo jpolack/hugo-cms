@@ -18,11 +18,11 @@ const oldState = JSON.parse(localStorage.getItem('HUGO-CMS-state')) || {
   loadState: undefined,
 };
 
-if(oldState){
-  console.log("Reloaded old state")
+if (oldState) {
+  console.log('Reloaded old state');
 }
 
-const store = createStore(reducers, oldState,composeWithDevTools(middlewares));
+const store = createStore(reducers, oldState, composeWithDevTools(middlewares));
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
       <Provider store={store}>
         <Route path="/" exact component={authenticated(Home)} />
         <Route path="/repo/:name?/:path*" component={authenticated(Repo)} />
-        <Route path="/file/:name" component={authenticated(FileView)} />
+        <Route path="/file/:name?/:path*/edit" component={authenticated(FileView)} />
         <Route path="/auth" component={authCallback} />
       </Provider>
     </Router>

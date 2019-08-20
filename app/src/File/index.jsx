@@ -73,7 +73,7 @@ function renderMetaData(meta) {
 
 function FileView({ history, dispatch, match, loadState }) {
   useEffect(() => {
-    dispatch(FETCH_FILEDATA(match.params.name));
+    dispatch(FETCH_FILEDATA(match.params.path));
   }, []);
 
   const [editor, setEditor] = useState(undefined);
