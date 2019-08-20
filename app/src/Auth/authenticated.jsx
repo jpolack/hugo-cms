@@ -1,10 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 function AuthHOC(Component) {
   const AuthenticationComponent = (props) => {
-    const { authenticationState } = props
-    console.log("authenticationState", authenticationState)
+    const { authenticationState } = props;
+    console.log('authenticationState', authenticationState);
 
     if (!authenticationState || !authenticationState.accessToken) {
       return (
@@ -14,10 +15,16 @@ function AuthHOC(Component) {
       );
     }
 
-    return <Component {...props} />;
+    return <Component {...props} />; // eslint-disable-line react/jsx-props-no-spreading
   };
-  
-  return connect(state => state)(AuthenticationComponent)
+
+  AuthenticationComponent.propTypes = {
+    authenticationState: PropTypes.shape({
+      accessToken: PropTypes.string,
+    }).isRequired,
+  };
+
+  return connect((state) => state)(AuthenticationComponent);
 }
 
 export default AuthHOC;

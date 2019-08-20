@@ -37,7 +37,13 @@ const customMiddleWare = (store) => (next) => async (action) => {
 
   next(action);
 
-  await pushFileData(state.authenticationState.accessToken, file.url, base64.encode(utf8.encode(content)), file.sha, file.path);
+  await pushFileData(
+    state.authenticationState.accessToken,
+    file.url,
+    base64.encode(utf8.encode(content)),
+    file.sha,
+    file.path,
+  );
 
   next(PUSHED_FILEEDIT());
 };

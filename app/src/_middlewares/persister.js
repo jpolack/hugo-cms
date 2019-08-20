@@ -1,9 +1,8 @@
 const customMiddleWare = (store) => (next) => (action) => {
+  const state = store.getState();
+  localStorage.setItem('HUGO-CMS-state', JSON.stringify(state));
 
-    const state = store.getState()
-    localStorage.setItem('HUGO-CMS-state', JSON.stringify(state));
-
-    next(action);
+  next(action);
 };
 
 export default customMiddleWare;

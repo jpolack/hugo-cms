@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -94,5 +96,27 @@ function Repo({
     </>
   );
 }
+
+Repo.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  loadState: PropTypes.shape({
+    repoDetailData: PropTypes.shape({
+      files: PropTypes.arrayOf(PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })).isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default connect((state) => state)(withRouter(Repo));

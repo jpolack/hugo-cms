@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import base64 from 'base-64';
 import utf8 from 'utf8';
+import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -71,7 +72,12 @@ function renderMetaData(meta) {
   );
 }
 
-function FileView({ history, dispatch, match, loadState }) {
+function FileView({
+  history,
+  dispatch,
+  match,
+  loadState,
+}) {
   useEffect(() => {
     dispatch(FETCH_FILEDATA(match.params.path));
   }, []);
@@ -118,5 +124,23 @@ function FileView({ history, dispatch, match, loadState }) {
     </>
   );
 }
+
+FileView.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      path: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  loadState: PropTypes.shape({
+    fileData: PropTypes.shape({
+      content: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default connect((state) => state)(withRouter(FileView));

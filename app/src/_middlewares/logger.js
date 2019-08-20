@@ -1,4 +1,4 @@
-const customMiddleWare = (store) => (next) => (action) => {
+const customMiddleWare = () => (next) => (action) => {
   console.log('Action:', action);
   next(action);
 };

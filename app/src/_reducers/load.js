@@ -1,7 +1,7 @@
 const initialState = {
   userData: {},
   repoData: {
-    repositories: []
+    repositories: [],
   },
   repoDetailData: {
     files: [],
@@ -15,10 +15,10 @@ const load = (state = initialState, action) => {
       return {
         ...state,
         userData: {
-          meta:{
-            lastUpdate: Date.now() 
+          meta: {
+            lastUpdate: Date.now(),
           },
-          ...action.userData
+          ...action.userData,
         },
       };
     case 'FETCHED_REPODATA':
@@ -26,17 +26,17 @@ const load = (state = initialState, action) => {
         ...state,
         repoData: {
           meta: {
-            lastUpdate: Date.now()
+            lastUpdate: Date.now(),
           },
           repositories: action.repoData,
-        }
+        },
       };
     case 'FETCHED_REPODETAILDATA':
       return {
         ...state,
         repoDetailData: {
           meta: {
-            lastUpdate: Date.now()
+            lastUpdate: Date.now(),
           },
           name: action.repoName,
           path: action.path,
@@ -48,9 +48,9 @@ const load = (state = initialState, action) => {
         ...state,
         fileData: {
           meta: {
-            lastUpdate: Date.now()
+            lastUpdate: Date.now(),
           },
-          ...action.fileData
+          ...action.fileData,
         },
       };
     default:

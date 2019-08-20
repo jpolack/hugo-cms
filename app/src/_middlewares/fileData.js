@@ -19,7 +19,8 @@ const customMiddleWare = (store) => (next) => async (action) => {
   const state = store.getState();
 
 
-  const foundFile = state.loadState.repoDetailData.files.find((file) => file.path === action.filePath);
+  const foundFile = state.loadState.repoDetailData.files
+    .find((file) => file.path === action.filePath);
 
   if (!foundFile) {
     next(action);
