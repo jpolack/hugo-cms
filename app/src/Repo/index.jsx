@@ -14,6 +14,7 @@ const folderWhiteList = [
 ];
 const fileWhiteList = [
   /^content\/.*\.md/i,
+  /^README\.md/i,
 ];
 function filterView(file) {
   if (file.type === 'dir') {

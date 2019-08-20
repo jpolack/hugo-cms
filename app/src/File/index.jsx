@@ -13,7 +13,14 @@ import { PUSH_FILEEDIT } from '../_actions/FILEEDIT';
 function splitMetaAndContent(decodedContent) {
   const match = decodedContent.match(/---(\n.*)*---\n\n/);
 
-  const metaData = match[0] || '';
+  if (!match) {
+    return {
+      meta: undefined,
+      content: decodedContent.replace(/---(\n.*)*---\n\n/, ''),
+    };
+  }
+
+  const metaData = match[0];
 
   return {
     meta: {
@@ -27,51 +34,10 @@ function splitMetaAndContent(decodedContent) {
   };
 }
 
-const getEditor = (() => {
-  let editor;
-
-  const construct = () => {
-    if (!editor) {
-      editor = new SimpleMDE({
-        element: document.getElementById('fileEdit'),
-        spellChecker: false,
-      });
-    }
-
-    return editor;
-  };
-
-  return construct;
-})();
-
-function FileView({ dispatch, match, loadState }) {
-  useEffect(() => {
-    dispatch(FETCH_FILEDATA(match.params.name));
-  }, []);
-
-  const [meta, setMeta] = useState({
-    title: '',
-    date: '',
-    draft: '',
-    weight: '',
-    tags: '',
-  });
-
-  useLayoutEffect(() => {
-    const mde = getEditor();
-
-    if (loadState.fileData.content) {
-      const decodedContent = utf8.decode(base64.decode(loadState.fileData.content));
-      const { meta: parsedMetaData, content } = splitMetaAndContent(decodedContent);
-      setMeta(parsedMetaData);
-      mde.value(content);
-    }
-
-    return () => {
-      mde.toTextArea();
-    };
-  }, [loadState.fileData.content]);
-
+function renderMetaData(meta) {
+  if (!meta) {
+    return null;
+  }
   return (
     <>
       <TextField
@@ -99,8 +65,49 @@ function FileView({ dispatch, match, loadState }) {
         label="Tags"
         value={meta.tags}
       />
+    </>
+  );
+}
+
+function FileView({ dispatch, match, loadState }) {
+  useEffect(() => {
+    dispatch(FETCH_FILEDATA(match.params.name));
+  }, []);
+
+  const [editor, setEditor] = useState(undefined);
+  const [meta, setMeta] = useState({
+    title: '',
+    date: '',
+    draft: '',
+    weight: '',
+    tags: '',
+  });
+
+  useLayoutEffect(() => {
+    const mde = new SimpleMDE({
+      element: document.getElementById('fileEdit'),
+      spellChecker: false,
+    });
+
+    setEditor(mde);
+
+    if (loadState.fileData.content) {
+      const decodedContent = utf8.decode(base64.decode(loadState.fileData.content));
+      const { meta: parsedMetaData, content } = splitMetaAndContent(decodedContent);
+      setMeta(parsedMetaData);
+      mde.value(content);
+    }
+
+    return () => {
+      mde.toTextArea();
+    };
+  }, [loadState.fileData.content]);
+
+  return (
+    <>
+      {renderMetaData(meta)}
       <textarea id="fileEdit" />
-      <Button onClick={() => dispatch(PUSH_FILEEDIT(getEditor().value(), meta))}>
+      <Button onClick={() => editor && dispatch(PUSH_FILEEDIT(editor.value(), meta))}>
         Send
       </Button>
     </>
