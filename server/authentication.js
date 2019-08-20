@@ -5,7 +5,7 @@ const clientID = 'a4cb4f76e6d024f070f6';
 const clientSecret = process.env.CLIENTSECRET;
 
 if (!clientSecret || clientSecret.length === 0) {
-  throw new Error('missing clientsecret');
+  throw new Error('missing CLIENTSECRET');
 }
 
 const authenticationHandler = async (req, res) => {

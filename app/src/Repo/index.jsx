@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
 
@@ -54,7 +55,7 @@ function renderIcon(type) {
 }
 
 function Repo({
-  authenticationState, loadState, history, match, dispatch,
+  loadState, history, match, dispatch,
 }) {
   if (!match.params.name) {
     return <Redirect to="/" />;
@@ -71,6 +72,9 @@ function Repo({
         {' '}
         {match.params.name}
       </Typography>
+      <IconButton onClick={()=>history.goBack()}>
+        <Icon>keyboard_backspace</Icon>
+      </IconButton>
       <List>
         {loadState.repoDetailData.files
           .filter(filterView)

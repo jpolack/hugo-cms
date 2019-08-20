@@ -7,6 +7,8 @@ import utf8 from 'utf8';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
 import { FETCH_FILEDATA } from '../_actions/FILEDATA';
 import { PUSH_FILEEDIT } from '../_actions/FILEEDIT';
 
@@ -69,7 +71,7 @@ function renderMetaData(meta) {
   );
 }
 
-function FileView({ dispatch, match, loadState }) {
+function FileView({ history, dispatch, match, loadState }) {
   useEffect(() => {
     dispatch(FETCH_FILEDATA(match.params.name));
   }, []);
@@ -105,6 +107,9 @@ function FileView({ dispatch, match, loadState }) {
 
   return (
     <>
+      <IconButton onClick={() => history.goBack()}>
+        <Icon>keyboard_backspace</Icon>
+      </IconButton>
       {renderMetaData(meta)}
       <textarea id="fileEdit" />
       <Button onClick={() => editor && dispatch(PUSH_FILEEDIT(editor.value(), meta))}>
