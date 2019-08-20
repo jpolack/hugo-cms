@@ -35,8 +35,6 @@ const customMiddleWare = (store) => (next) => async (action) => {
 
   const content = metaContent + action.fileContent;
 
-  next(action);
-
   await pushFileData(
     state.authenticationState.accessToken,
     file.url,

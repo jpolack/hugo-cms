@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
+import CreateDialog from '../Create';
 
 const folderWhiteList = [
   /^content/,
@@ -67,6 +68,8 @@ function Repo({
     dispatch(FETCH_REPODETAILDATA(match.params.name, match.params.path));
   }, [match.params.path]);
 
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <Typography variant="h1">
@@ -76,6 +79,9 @@ function Repo({
       </Typography>
       <IconButton onClick={() => history.goBack()}>
         <Icon>keyboard_backspace</Icon>
+      </IconButton>
+      <IconButton onClick={() => setOpen(true)}>
+        <Icon>add</Icon>
       </IconButton>
       <List>
         {loadState.repoDetailData.files
@@ -93,6 +99,7 @@ function Repo({
             </ListItem>
           ))}
       </List>
+      <CreateDialog open={open} setOpen={setOpen} />
     </>
   );
 }
@@ -105,8 +112,8 @@ Repo.propTypes = {
   dispatch: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      path: PropTypes.string,
     }).isRequired,
   }).isRequired,
   loadState: PropTypes.shape({

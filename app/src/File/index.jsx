@@ -99,12 +99,15 @@ function FileView({
 
     setEditor(mde);
 
-    if (loadState.fileData.content) {
-      const decodedContent = utf8.decode(base64.decode(loadState.fileData.content));
-      const { meta: parsedMetaData, content } = splitMetaAndContent(decodedContent);
-      setMeta(parsedMetaData);
-      mde.value(content);
+    let currentContent = loadState.fileData.content;
+    if (!currentContent) {
+      currentContent = '';
     }
+
+    const decodedContent = utf8.decode(base64.decode(currentContent));
+    const { meta: parsedMetaData, content } = splitMetaAndContent(decodedContent);
+    setMeta(parsedMetaData);
+    mde.value(content);
 
     return () => {
       mde.toTextArea();
