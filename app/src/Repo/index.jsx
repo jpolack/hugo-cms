@@ -40,7 +40,7 @@ function handleClick(file, history, match) {
   }
 }
 
-function renderIcon(type) {
+export function renderIcon(type) {
   switch (type) {
     case 'file':
       return (
@@ -57,7 +57,7 @@ function renderIcon(type) {
   }
 }
 
-function Repo({
+export function Repo({
   loadState, history, match, dispatch,
 }) {
   if (!match.params.name) {
@@ -120,6 +120,7 @@ Repo.propTypes = {
     repoDetailData: PropTypes.shape({
       files: PropTypes.arrayOf(PropTypes.shape({
         type: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,

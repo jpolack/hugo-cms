@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { FETCH_USERDATA } from '../_actions/USERDATA';
 import { FETCH_REPODATA } from '../_actions/REPODATA';
 
-function Home({
+export function Home({
   loadState, history, dispatch,
 }) {
   useEffect(() => {
@@ -55,7 +55,6 @@ Home.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
-
 };
 
 export default connect((state) => state)(withRouter(Home));

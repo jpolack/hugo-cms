@@ -9,6 +9,7 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
+    beforeEach: 'readonly',
     describe: 'readonly',
     it: 'readonly',
     expect: 'readonly',

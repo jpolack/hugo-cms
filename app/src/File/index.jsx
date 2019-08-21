@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import { FETCH_FILEDATA } from '../_actions/FILEDATA';
 import { PUSH_FILEEDIT } from '../_actions/FILEEDIT';
 
-function splitMetaAndContent(decodedContent) {
+export function splitMetaAndContent(decodedContent) {
   const match = decodedContent.match(/---(\n.*)*---\n\n/);
 
   if (!match) {
@@ -72,7 +72,7 @@ function renderMetaData(meta) {
   );
 }
 
-function FileView({
+export function File({
   history,
   dispatch,
   match,
@@ -128,9 +128,8 @@ function FileView({
   );
 }
 
-FileView.propTypes = {
+File.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -146,4 +145,4 @@ FileView.propTypes = {
   }).isRequired,
 };
 
-export default connect((state) => state)(withRouter(FileView));
+export default connect((state) => state)(withRouter(File));
