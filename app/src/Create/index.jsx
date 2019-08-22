@@ -10,7 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PUSH_FILECREATE } from '../_actions/FILECREATE';
 
-function CreateDialog({ open, setOpen, dispatch }) {
+export function CreateDialog({ open, setOpen, dispatch }) {
   const [path, setPath] = useState('');
 
   return (

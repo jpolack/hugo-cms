@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-function AuthHOC(Component) {
+export const AuthHOC = (Component) => {
   const AuthenticationComponent = (props) => {
     const { authenticationState } = props;
-    console.log('authenticationState', authenticationState);
 
     if (!authenticationState || !authenticationState.accessToken) {
       return (
@@ -24,7 +23,12 @@ function AuthHOC(Component) {
     }).isRequired,
   };
 
-  return connect((state) => state)(AuthenticationComponent);
+  return AuthenticationComponent;
+};
+
+
+function connectedAuthHOC(Component) {
+  return connect((state) => state)(AuthHOC(Component));
 }
 
-export default AuthHOC;
+export default connectedAuthHOC;

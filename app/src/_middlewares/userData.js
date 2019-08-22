@@ -1,6 +1,6 @@
 import { FETCHED_USERDATA, FETCH_USERDATA } from '../_actions/USERDATA';
 
-const fetchUserData = async (accessToken) => {
+export const fetchUserData = async (accessToken) => {
   const userResult = await fetch('https://api.github.com/user', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
