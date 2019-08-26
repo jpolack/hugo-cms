@@ -18,8 +18,7 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "simplemde": "^1.11.2",
-    "utf8": "^3.0.0",
-    "webpack": "^4.39.2"
+    "utf8": "^3.0.0"
   },
   "scripts": {
     "start": "node .",
@@ -28,6 +27,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
+    "webpack": "^4.39.2",
     "webpack-dev-middleware": "^3.7.0",
     "redux-devtools-extension": "^2.13.8",
     "@babel/core": "^7.5.5",
