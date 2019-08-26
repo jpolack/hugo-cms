@@ -1,4 +1,15 @@
+import moment from 'moment';
+import base64 from 'base-64';
 import { PUSH_FILECREATE } from '../_actions/FILECREATE';
+
+jest.mock('moment');
+jest.mock('base-64');
+
+const mockFormat = jest.fn(() => 'formatedDate');
+moment.mockImplementation(() => ({
+  format: mockFormat,
+}));
+base64.encode.mockImplementation((s) => s);
 
 global.fetch = jest.fn(() => Promise.resolve({
   json: () => Promise.resolve({
@@ -83,6 +94,43 @@ describe('fileCreateLoader', () => {
       });
       ran = true;
     })(PUSH_FILECREATE('someCreatePath'));
+
+    expect(ran).toBe(true);
+  });
+
+  it('fetchesfileCreate with metadata', async () => {
+    let ran = false;
+    await customMiddleWare({
+      getState: () => ({
+        authenticationState: {
+          accessToken: 'someAccessToken',
+        },
+        loadState: {
+          userData: {
+            login: 'someUserName',
+          },
+          repoDetailData: {
+            name: 'someRepoName',
+            path: undefined,
+          },
+        },
+      }),
+    })((action) => {
+      expect(action.type).toEqual('PUSHED_FILECREATE');
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+      expect(global.fetch).toHaveBeenCalledWith('https://api.github.com/repos/someUserName/someRepoName/contents/someCreatePath', {
+        headers: {
+          Authorization: 'Bearer someAccessToken',
+        },
+        method: 'PUT',
+        body: JSON.stringify({
+          message: 'creating someCreatePath',
+          content: `---\ntitle: ${JSON.stringify('')}\ndate: formatedDate\ndraft: ${true}\nweight: \ntags: ${[]}\n---\n\n`,
+        }),
+      });
+      expect(mockFormat).toHaveBeenCalledTimes(1);
+      ran = true;
+    })(PUSH_FILECREATE('someCreatePath', true));
 
     expect(ran).toBe(true);
   });

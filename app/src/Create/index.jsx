@@ -13,8 +13,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { PUSH_FILECREATE } from '../_actions/FILECREATE';
 
 export function CreateDialog({ open, setOpen, dispatch }) {
-  const [path, setPath] = useState('');
-  const [createMetadata, setCreateMetadata] = useState(true);
+  const [metadata, setMetadata] = useState({
+    path: '',
+    createMetadata: true,
+  });
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
@@ -26,8 +28,11 @@ export function CreateDialog({ open, setOpen, dispatch }) {
         <FormControlLabel
           control={(
             <Checkbox
-              checked={createMetadata}
-              onChange={(e) => setCreateMetadata(e.target.checked)}
+              checked={metadata.createMetadata}
+              onChange={(e) => setMetadata({
+                ...metadata,
+                createMetadata: e.target.checked,
+              })}
               color="primary"
             />
           )}
@@ -39,8 +44,11 @@ export function CreateDialog({ open, setOpen, dispatch }) {
           id="name"
           placeholder="some/file/index.md"
           label="Filename or Path"
-          value={path}
-          onChange={(e) => setPath(e.target.value)}
+          value={metadata.path}
+          onChange={(e) => setMetadata({
+            ...metadata,
+            path: e.target.value,
+          })}
           fullWidth
         />
       </DialogContent>
@@ -50,7 +58,7 @@ export function CreateDialog({ open, setOpen, dispatch }) {
         </Button>
         <Button onClick={() => {
           setOpen(false);
-          dispatch(PUSH_FILECREATE(path, createMetadata));
+          dispatch(PUSH_FILECREATE(metadata.path, metadata.createMetadata));
         }}
         >
           Create

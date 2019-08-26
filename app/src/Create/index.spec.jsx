@@ -48,7 +48,10 @@ describe('CreateDialog', () => {
   });
 
   it('dispatches an action submit', () => {
-    useStateSpy.mockImplementation(() => ['somePath', setState]);
+    useStateSpy.mockImplementation(() => [{
+      path: 'somePath',
+      createMetadata: true,
+    }, setState]);
 
     const props = {
       open: true,
@@ -65,6 +68,6 @@ describe('CreateDialog', () => {
     btn.at(1).simulate('click');
 
     expect(props.dispatch).toHaveBeenCalledTimes(1);
-    expect(props.dispatch).toHaveBeenCalledWith(PUSH_FILECREATE('somePath'));
+    expect(props.dispatch).toHaveBeenCalledWith(PUSH_FILECREATE('somePath', true));
   });
 });

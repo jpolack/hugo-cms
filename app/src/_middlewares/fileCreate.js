@@ -1,7 +1,8 @@
 import base64 from 'base-64';
+import moment from 'moment';
 import { PUSH_FILECREATE, PUSHED_FILECREATE } from '../_actions/FILECREATE';
 
-const pushFileData = async (accessToken, username, repoName, path, createPath) => {
+const pushFileData = async (accessToken, username, repoName, path, createPath, content) => {
   const fileResult = await fetch(`https://api.github.com/repos/${username}/${repoName}/contents/${path}${createPath}`, {
     method: 'PUT',
     headers: {
@@ -9,7 +10,7 @@ const pushFileData = async (accessToken, username, repoName, path, createPath) =
     },
     body: JSON.stringify({
       message: `creating ${path}${createPath}`,
-      content: base64.encode(''),
+      content,
     }),
   });
   const fileData = await fileResult.json();
@@ -31,8 +32,9 @@ const customMiddleWare = (store) => (next) => async (action) => {
     path += '/';
   }
 
+  let content = base64.encode('');
   if (action.createMetadata) {
-    console.log('CREATE METADATA');
+    content = `---\ntitle: ${JSON.stringify('')}\ndate: ${moment().format()}\ndraft: ${true}\nweight: \ntags: ${[]}\n---\n\n`;
   }
 
   if (!action.path) {
@@ -47,6 +49,7 @@ const customMiddleWare = (store) => (next) => async (action) => {
     state.loadState.repoDetailData.name,
     path,
     action.path,
+    content,
   );
 
   next(PUSHED_FILECREATE());
