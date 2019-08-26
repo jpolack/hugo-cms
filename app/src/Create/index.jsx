@@ -4,14 +4,17 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PUSH_FILECREATE } from '../_actions/FILECREATE';
 
 export function CreateDialog({ open, setOpen, dispatch }) {
   const [path, setPath] = useState('');
+  const [createMetadata, setCreateMetadata] = useState(true);
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
@@ -20,6 +23,16 @@ export function CreateDialog({ open, setOpen, dispatch }) {
         <DialogContentText>
           If you want to create a folder you can do that by entering a path
         </DialogContentText>
+        <FormControlLabel
+          control={(
+            <Checkbox
+              checked={createMetadata}
+              onChange={(e) => setCreateMetadata(e.target.checked)}
+              color="primary"
+            />
+          )}
+          label="Create Metadata"
+        />
         <TextField
           autoFocus
           margin="dense"
@@ -37,7 +50,7 @@ export function CreateDialog({ open, setOpen, dispatch }) {
         </Button>
         <Button onClick={() => {
           setOpen(false);
-          dispatch(PUSH_FILECREATE(path));
+          dispatch(PUSH_FILECREATE(path, createMetadata));
         }}
         >
           Create

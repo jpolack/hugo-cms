@@ -31,6 +31,16 @@ const customMiddleWare = (store) => (next) => async (action) => {
     path += '/';
   }
 
+  if (action.createMetadata) {
+    console.log('CREATE METADATA');
+  }
+
+  if (!action.path) {
+    // TODO validation
+    next(action);
+    return;
+  }
+
   await pushFileData(
     state.authenticationState.accessToken,
     state.loadState.userData.login,

@@ -1,6 +1,7 @@
-export const PUSH_FILECREATE = (path) => ({
+export const PUSH_FILECREATE = (path, createMetadata) => ({
   type: 'PUSH_FILECREATE',
   path,
+  createMetadata,
 });
 
 export const PUSHED_FILECREATE = () => ({
