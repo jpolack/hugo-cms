@@ -34,7 +34,7 @@ const customMiddleWare = (store) => (next) => async (action) => {
 
   let content = base64.encode('');
   if (action.createMetadata) {
-    content = `---\ntitle: ${JSON.stringify('')}\ndate: ${moment().format()}\ndraft: ${true}\nweight: \ntags: ${[]}\n---\n\n`;
+    content = base64.encode(`---\ntitle: ${JSON.stringify('')}\ndate: ${moment().format()}\ndraft: ${true}\nweight: 0\ntags: []\n---\n\n`);
   }
 
   if (!action.path) {

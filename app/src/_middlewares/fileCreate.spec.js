@@ -125,7 +125,7 @@ describe('fileCreateLoader', () => {
         method: 'PUT',
         body: JSON.stringify({
           message: 'creating someCreatePath',
-          content: `---\ntitle: ${JSON.stringify('')}\ndate: formatedDate\ndraft: ${true}\nweight: \ntags: ${[]}\n---\n\n`,
+          content: `---\ntitle: ${JSON.stringify('')}\ndate: formatedDate\ndraft: ${true}\nweight: 0\ntags: []\n---\n\n`,
         }),
       });
       expect(mockFormat).toHaveBeenCalledTimes(1);
