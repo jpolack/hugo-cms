@@ -12,7 +12,7 @@ app.use(history());
 
 if (process.env.NODE_ENV !== 'production') {
   console.log('adding dev route');
-  app.use('/', appBuilder);
+  app.use('/', appBuilder());
 } else {
   console.log('adding prod route');
   app.use('/', express.static(`${__dirname}/../app/dist`));

@@ -9,7 +9,7 @@ export const AuthHOC = (Component) => {
     if (!authenticationState || !authenticationState.accessToken) {
       return (
         <>
-          <a href={`https://github.com/login/oauth/authorize?client_id=a4cb4f76e6d024f070f6&redirect_uri=${REDIRECT_URL || 'http://localhost:3000/token'}&scope=repo`}>Login with GitHub</a>
+          <a href={`https://github.com/login/oauth/authorize?client_id=${CLIENTID}&redirect_uri=${REDIRECT_URL || 'http://localhost:3000/token'}&scope=repo`}>Login with GitHub</a>
         </>
       );
     }

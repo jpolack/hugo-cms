@@ -1,11 +1,15 @@
 const fetch = require('node-fetch');
 const queryString = require('query-string');
 
-const clientID = 'a4cb4f76e6d024f070f6';
+const clientID = process.env.CLIENTID;
 const clientSecret = process.env.CLIENTSECRET;
 
 if (!clientSecret || clientSecret.length === 0) {
   throw new Error('missing CLIENTSECRET');
+}
+
+if (!clientID || clientID.length === 0) {
+  throw new Error('missing CLIENTID');
 }
 
 const authenticationHandler = async (req, res) => {
