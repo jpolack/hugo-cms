@@ -14,6 +14,7 @@ module.exports = {
     it: 'readonly',
     expect: 'readonly',
     jest: 'readonly',
+    NODE_ENV: 'readonly',
   },
   parserOptions: {
     ecmaFeatures: {

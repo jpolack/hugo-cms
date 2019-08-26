@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const outputPath = path.resolve(__dirname, 'dist');
@@ -37,5 +38,8 @@ module.exports = {
         to: path.join(outputPath),
       },
     ]),
+    new webpack.DefinePlugin({
+      NODE_ENV: process.env.NODE_ENV
+    })
   ],
 };

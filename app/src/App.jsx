@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from './_reducers';
 import middlewares from './_middlewares';
@@ -24,7 +23,14 @@ if (oldState) {
   };
 }
 
-const store = createStore(reducers, oldState, composeWithDevTools(middlewares));
+let store;
+if (NODE_ENV !== 'production') {
+  const { composeWithDevTools } = require('redux-devtools-extension'); // eslint-disable-line global-require, import/no-extraneous-dependencies
+  store = createStore(reducers, oldState, composeWithDevTools(middlewares));
+} else {
+  store = createStore(reducers, oldState, middlewares);
+}
+
 
 function App() {
   return (
