@@ -11,7 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
-import CreateDialog from '../Create';
+import CreateDialogView from '../Create';
 
 const folderWhiteList = [
   /^content/,
@@ -72,7 +72,7 @@ export function Repo({
 
   return (
     <>
-      <Typography variant="h1">
+      <Typography variant="h4">
         Files in
         {' '}
         {match.params.name}
@@ -99,7 +99,7 @@ export function Repo({
             </ListItem>
           ))}
       </List>
-      <CreateDialog open={open} setOpen={setOpen} />
+      <CreateDialogView open={open} setOpen={setOpen} />
     </>
   );
 }

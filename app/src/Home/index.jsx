@@ -26,7 +26,7 @@ export function Home({
 
   return (
     <>
-      <Typography variant="h1">
+      <Typography variant="h4">
         Select a repository
       </Typography>
       <List>

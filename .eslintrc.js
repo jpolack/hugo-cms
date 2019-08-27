@@ -16,6 +16,7 @@ module.exports = {
     jest: 'readonly',
     NODE_ENV: 'readonly',
     REDIRECT_URL: 'readonly',
+    CLIENTID: 'readonly',
   },
   parserOptions: {
     ecmaFeatures: {

@@ -6,11 +6,12 @@ import { createStore } from 'redux';
 import reducers from './_reducers';
 import middlewares from './_middlewares';
 
-import Home from './Home';
-import Repo from './Repo';
+import HomeView from './Home';
+import RepoView from './Repo';
 import authCallback from './Auth/authCallback';
 import authenticated from './Auth/authenticated';
 import FileView from './File';
+import Wrapper from './Wrapper';
 
 let oldState = JSON.parse(localStorage.getItem('HUGO-CMS-state'));
 
@@ -34,14 +35,16 @@ if (NODE_ENV !== 'production') {
 
 function App() {
   return (
-    <Router>
-      <Provider store={store}>
-        <Route path="/" exact component={authenticated(Home)} />
-        <Route path="/repo/:name?/:path*" component={authenticated(Repo)} />
-        <Route path="/file/:name?/:path*/edit" component={authenticated(FileView)} />
-        <Route path="/auth" component={authCallback} />
-      </Provider>
-    </Router>
+    <Wrapper>
+      <Router>
+        <Provider store={store}>
+          <Route path="/" exact component={authenticated(HomeView)} />
+          <Route path="/repo/:name?/:path*" component={authenticated(RepoView)} />
+          <Route path="/file/:name?/:path*/edit" component={authenticated(FileView)} />
+          <Route path="/auth" component={authCallback} />
+        </Provider>
+      </Router>
+    </Wrapper>
   );
 }
 

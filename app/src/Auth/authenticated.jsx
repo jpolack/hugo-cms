@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Unauthenticated from './unauthenticated';
 
 export const AuthHOC = (Component) => {
   const AuthenticationComponent = (props) => {
@@ -8,9 +9,7 @@ export const AuthHOC = (Component) => {
 
     if (!authenticationState || !authenticationState.accessToken) {
       return (
-        <>
-          <a href={`https://github.com/login/oauth/authorize?client_id=${CLIENTID}&redirect_uri=${REDIRECT_URL || 'http://localhost:3000/token'}&scope=repo`}>Login with GitHub</a>
-        </>
+        <Unauthenticated />
       );
     }
 
