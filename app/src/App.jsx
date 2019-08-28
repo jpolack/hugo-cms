@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, Redirect, Switch,
+} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
@@ -36,14 +38,17 @@ if (NODE_ENV !== 'production') {
 function App() {
   return (
     <Wrapper>
-      <Router>
-        <Provider store={store}>
-          <Route path="/" exact component={authenticated(HomeView)} />
-          <Route path="/repo/:name?/:path*" component={authenticated(RepoView)} />
-          <Route path="/file/:name?/:path*/edit" component={authenticated(FileView)} />
-          <Route path="/auth" component={authCallback} />
-        </Provider>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Switch>
+            <Route path="/" exact component={authenticated(HomeView)} />
+            <Route path="/repo/:name?/:path*" component={authenticated(RepoView)} />
+            <Route path="/file/:name?/:path*/edit" component={authenticated(FileView)} />
+            <Route path="/auth" component={authCallback} />
+            <Route component={() => <Redirect to="/" />} />
+          </Switch>
+        </Router>
+      </Provider>
     </Wrapper>
   );
 }

@@ -121,7 +121,7 @@ export function File({
       </IconButton>
       {renderMetaData(meta)}
       <textarea id="fileEdit" />
-      <Button onClick={() => editor && dispatch(PUSH_FILEEDIT(editor.value(), meta))}>
+      <Button color="primary" onClick={() => editor && dispatch(PUSH_FILEEDIT(editor.value(), meta))}>
         Send
       </Button>
     </>

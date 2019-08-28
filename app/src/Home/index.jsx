@@ -27,7 +27,7 @@ export function Home({
   return (
     <>
       <Typography variant="h4">
-        Select a repository
+        Select a repository that contains your Hugo site
       </Typography>
       <List>
         {loadState.repoData.repositories.map((repo) => (

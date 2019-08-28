@@ -7,13 +7,12 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
-import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 const useStyle = makeStyles((theme) => ({
   header: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
-    padding: 20,
   },
 }));
 
@@ -22,12 +21,14 @@ function Container({
 }) {
   const classes = useStyle();
   return (
-    <Grid container alignItems="flex-start">
-      <Grid item xs={12} className={classes.header}>
+    <Box display="flex" flex={1} flexDirection="column">
+      <Box className={classes.header} padding={2}>
         <Typography variant="h1">Hugo CMS</Typography>
-      </Grid>
-      {children}
-    </Grid>
+      </Box>
+      <Box flex={1} padding={2} display="flex" flexDirection="column" alignItems="flex-start">
+        {children}
+      </Box>
+    </Box>
   );
 }
 

@@ -10,14 +10,15 @@ import Typography from '@material-ui/core/Typography';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
+import Box from '@material-ui/core/Box';
 import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
 import CreateDialogView from '../Create';
 
 const folderWhiteList = [
-  /^content/,
+  /.*/,
 ];
 const fileWhiteList = [
-  /^content\/.*\.md/i,
+  /.*\.md/i,
   /^README\.md/i,
 ];
 function filterView(file) {
@@ -77,12 +78,23 @@ export function Repo({
         {' '}
         {match.params.name}
       </Typography>
-      <IconButton onClick={() => history.goBack()}>
-        <Icon>keyboard_backspace</Icon>
-      </IconButton>
-      <IconButton onClick={() => setOpen(true)}>
-        <Icon>add</Icon>
-      </IconButton>
+      <Box display="flex">
+        <IconButton onClick={() => {
+          if (loadState.repoDetailData.path) {
+            const pathBefore = loadState.repoDetailData.path.split('/');
+            pathBefore.pop();
+            history.replace(`/repo/${match.params.name}/${pathBefore.join('/')}`);
+          } else {
+            history.replace('/');
+          }
+        }}
+        >
+          <Icon>keyboard_backspace</Icon>
+        </IconButton>
+        <IconButton color="primary" onClick={() => setOpen(true)}>
+          <Icon>add</Icon>
+        </IconButton>
+      </Box>
       <List>
         {loadState.repoDetailData.files
           .filter(filterView)
@@ -107,7 +119,7 @@ export function Repo({
 Repo.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
   match: PropTypes.shape({
@@ -118,6 +130,7 @@ Repo.propTypes = {
   }).isRequired,
   loadState: PropTypes.shape({
     repoDetailData: PropTypes.shape({
+      path: PropTypes.string,
       files: PropTypes.arrayOf(PropTypes.shape({
         type: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired,
