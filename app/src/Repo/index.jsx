@@ -15,10 +15,10 @@ import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
 import CreateDialogView from '../Create';
 
 const folderWhiteList = [
-  /.*/,
+  /^content/,
 ];
 const fileWhiteList = [
-  /.*\.md/i,
+  /^content\/.*\.md/i,
   /^README\.md/i,
 ];
 function filterView(file) {

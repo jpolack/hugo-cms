@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import Unauthenticated from './unauthenticated';
 
 const { AuthHOC } = require('./authenticated');
 
@@ -18,7 +19,7 @@ describe('AuthHOC', () => {
     const renderedAuth = shallow(<EvaluatedHOC authenticationState={authenticationState} />);
 
     expect(renderedAuth.find(ANamedComponent).length).toBe(1);
-    expect(renderedAuth.find('a').length).toBe(0);
+    expect(renderedAuth.find(Unauthenticated).length).toBe(0);
   });
 
   it('rejects correctly', () => {
@@ -34,6 +35,6 @@ describe('AuthHOC', () => {
     const renderedAuth = shallow(<EvaluatedHOC authenticationState={authenticationState} />);
 
     expect(renderedAuth.find(ANamedComponent).length).toBe(0);
-    expect(renderedAuth.find('a').length).toBe(1);
+    expect(renderedAuth.find(Unauthenticated).length).toBe(1);
   });
 });

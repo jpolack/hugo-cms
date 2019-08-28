@@ -21,7 +21,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -49,7 +49,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -77,7 +77,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -99,14 +99,14 @@ describe('Repo', () => {
       expect(renderedApp.find(IconButton).length).toBe(2);
 
       renderedApp.find(IconButton).at(0).simulate('click');
-      expect(props.history.goBack).toHaveBeenCalledTimes(1);
+      expect(props.history.replace).toHaveBeenCalledTimes(1);
     });
 
     it('navigates create correctly', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -137,7 +137,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -175,7 +175,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -213,7 +213,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {
@@ -246,7 +246,7 @@ describe('Repo', () => {
       const props = {
         history: {
           push: jest.fn(),
-          goBack: jest.fn(),
+          replace: jest.fn(),
         },
         dispatch: jest.fn(),
         match: {

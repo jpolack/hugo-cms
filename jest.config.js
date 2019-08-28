@@ -7,6 +7,7 @@ module.exports = {
     'babel-jest': {
       babelrcFile: 'custom/path/to/.babelrc',
     },
+    NODE_ENV: 'test',
   },
   moduleFileExtensions: [
     'js',
