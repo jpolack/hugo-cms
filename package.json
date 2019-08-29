@@ -25,7 +25,8 @@
   "scripts": {
     "start": "node .",
     "build": "npx webpack -p --config=./app/webpack.config.js",
-    "test": "npx jest",
+    "test_unit": "npx jest",
+    "test": "npm run lint && npm run test_unit",
     "lint": "eslint --max-warnings=10 '**/*.js' '**/*.jsx'"
   },
   "devDependencies": {
