@@ -72,7 +72,7 @@ export function Repo({
   const [open, setOpen] = useState(false);
 
   return (
-    <>
+    <Box display="block" flex={1}>
       <Typography variant="h4">
         Files in
         {' '}
@@ -112,7 +112,7 @@ export function Repo({
           ))}
       </List>
       <CreateDialogView open={open} setOpen={setOpen} />
-    </>
+    </Box>
   );
 }
 

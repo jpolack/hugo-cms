@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 
+import Box from '@material-ui/core/Box';
 import { FETCH_USERDATA } from '../_actions/USERDATA';
 import { FETCH_REPODATA } from '../_actions/REPODATA';
 
@@ -25,7 +26,7 @@ export function Home({
   }, [loadState.userData.repos_url]);
 
   return (
-    <>
+    <Box display="block" flex={1}>
       <Typography variant="h4">
         Select a repository that contains your Hugo site
       </Typography>
@@ -36,7 +37,7 @@ export function Home({
           </ListItem>
         ))}
       </List>
-    </>
+    </Box>
   );
 }
 
