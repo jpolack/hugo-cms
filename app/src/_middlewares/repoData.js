@@ -20,7 +20,9 @@ const customMiddleWare = (store) => (next) => async (action) => {
 
   const repoData = await fetchRepoData(state.authenticationState.accessToken, action.url);
 
-  next(FETCHED_REPODATA(repoData));
+  setTimeout(() => {
+    next(FETCHED_REPODATA(repoData));
+  }, 5000);
 };
 
 export default customMiddleWare;

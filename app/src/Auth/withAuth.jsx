@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Unauthenticated from './unauthenticated';
 
-export const AuthHOC = (Component) => {
+export const withAuth = (Component) => {
   const AuthenticationComponent = (props) => {
     const { authenticationState } = props;
 
@@ -26,8 +26,8 @@ export const AuthHOC = (Component) => {
 };
 
 
-function connectedAuthHOC(Component) {
-  return connect((state) => state)(AuthHOC(Component));
+function connectedWithAuth(Component) {
+  return connect((state) => state)(withAuth(Component));
 }
 
-export default connectedAuthHOC;
+export default connectedWithAuth;

@@ -11,7 +11,7 @@ import middlewares from './_middlewares';
 import HomeView from './Home';
 import RepoView from './Repo';
 import authCallback from './Auth/authCallback';
-import authenticated from './Auth/authenticated';
+import withAuthHoc from './Auth/withAuth';
 import FileView from './File';
 import Wrapper from './Wrapper';
 
@@ -41,9 +41,9 @@ function App() {
       <Provider store={store}>
         <Router>
           <Switch>
-            <Route path="/" exact component={authenticated(HomeView)} />
-            <Route path="/repo/:name?/:path*" component={authenticated(RepoView)} />
-            <Route path="/file/:name?/:path*/edit" component={authenticated(FileView)} />
+            <Route path="/" exact component={withAuthHoc(HomeView)} />
+            <Route path="/repo/:name?/:path*" component={withAuthHoc(RepoView)} />
+            <Route path="/file/:name?/:path*/edit" component={withAuthHoc(FileView)} />
             <Route path="/auth" component={authCallback} />
             <Route component={() => <Redirect to="/" />} />
           </Switch>

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Unauthenticated from './unauthenticated';
 
-const { AuthHOC } = require('./authenticated');
+const { AuthHOC } = require('./withAuth');
 
 describe('AuthHOC', () => {
   it('forwards correctly', () => {
