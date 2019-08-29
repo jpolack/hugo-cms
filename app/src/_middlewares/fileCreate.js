@@ -18,8 +18,8 @@ const pushFileData = async (accessToken, username, repoName, path, createPath, c
 };
 
 const customMiddleWare = (store) => (next) => async (action) => {
+  next(action);
   if (action.type !== PUSH_FILECREATE().type) {
-    next(action);
     return;
   }
 

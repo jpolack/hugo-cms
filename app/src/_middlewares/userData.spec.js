@@ -1,4 +1,4 @@
-import { FETCH_USERDATA } from '../_actions/USERDATA';
+import { FETCH_USERDATA, FETCHED_USERDATA } from '../_actions/USERDATA';
 
 global.fetch = jest.fn(() => Promise.resolve({
   json: () => Promise.resolve({
@@ -9,44 +9,46 @@ global.fetch = jest.fn(() => Promise.resolve({
 const userData = require('./userData');
 
 describe('UserDataLoader', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('fetchesUserData', async () => {
     const customMiddleWare = userData.default;
 
-    let ran = false;
+    const nextMock = jest.fn();
     await customMiddleWare({
       getState: () => ({
         authenticationState: {
           accessToken: 'someAccessToken',
         },
       }),
-    })((action) => {
-      expect(action.type).toEqual('FETCHED_USERDATA');
-      expect(action.userData).toEqual({
-        someAcceptedResult: true,
-      });
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-      expect(global.fetch).toHaveBeenCalledWith('https://api.github.com/user', {
-        headers: {
-          Authorization: 'Bearer someAccessToken',
-        },
-      });
-      ran = true;
-    })(FETCH_USERDATA());
+    })(nextMock)(FETCH_USERDATA());
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(2);
+    expect(nextMock).toHaveBeenNthCalledWith(1, FETCH_USERDATA());
+    expect(nextMock).toHaveBeenNthCalledWith(2, FETCHED_USERDATA({
+      someAcceptedResult: true,
+    }));
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('https://api.github.com/user', {
+      headers: {
+        Authorization: 'Bearer someAccessToken',
+      },
+    });
   });
 
   it('skips', async () => {
     const customMiddleWare = userData.default;
 
-    let ran = false;
+    const mockAction = { type: 'someThingDifferent' };
+    const nextMock = jest.fn();
     await customMiddleWare({
       getState: () => {},
-    })((action) => {
-      expect(action.type).toEqual('someThingDifferent');
-      ran = true;
-    })({ type: 'someThingDifferent' });
+    })(nextMock)(mockAction);
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenNthCalledWith(1, mockAction);
+    expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 });

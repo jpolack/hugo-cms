@@ -11,8 +11,8 @@ const fetchFileData = async (accessToken, url) => {
 };
 
 const customMiddleWare = (store) => (next) => async (action) => {
+  next(action);
   if (action.type !== FETCH_FILEDATA().type) {
-    next(action);
     return;
   }
 
@@ -23,7 +23,6 @@ const customMiddleWare = (store) => (next) => async (action) => {
     .find((file) => file.path === action.filePath);
 
   if (!foundFile) {
-    next(action);
     return;
   }
 

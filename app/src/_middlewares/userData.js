@@ -11,8 +11,8 @@ export const fetchUserData = async (accessToken) => {
 };
 
 const customMiddleWare = (store) => (next) => async (action) => {
+  next(action);
   if (action.type !== FETCH_USERDATA().type) {
-    next(action);
     return;
   }
 

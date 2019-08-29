@@ -11,8 +11,8 @@ const fetchRepoData = async (accessToken, url) => {
 };
 
 const customMiddleWare = (store) => (next) => async (action) => {
+  next(action);
   if (action.type !== FETCH_REPODATA().type) {
-    next(action);
     return;
   }
 

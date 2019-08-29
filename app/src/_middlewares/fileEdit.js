@@ -19,8 +19,8 @@ const pushFileData = async (accessToken, url, newContent, oldSha, filepath) => {
 };
 
 const customMiddleWare = (store) => (next) => async (action) => {
+  next(action);
   if (action.type !== PUSH_FILEEDIT().type) {
-    next(action);
     return;
   }
 

@@ -1,5 +1,5 @@
 import base64 from 'base-64';
-import { PUSH_FILEEDIT } from '../_actions/FILEEDIT';
+import { PUSH_FILEEDIT, PUSHED_FILEEDIT } from '../_actions/FILEEDIT';
 
 jest.mock('base-64');
 base64.encode.mockImplementation((s) => s);
@@ -20,7 +20,7 @@ describe('fileEditLoader', () => {
   });
 
   it('fetchesfileEdit', async () => {
-    let ran = false;
+    const nextMock = jest.fn();
     await customMiddleWare({
       getState: () => ({
         authenticationState: {
@@ -34,22 +34,7 @@ describe('fileEditLoader', () => {
           },
         },
       }),
-    })((action) => {
-      expect(action.type).toEqual('PUSHED_FILEEDIT');
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-      expect(global.fetch).toHaveBeenCalledWith('someUrl', {
-        method: 'PUT',
-        headers: {
-          Authorization: 'Bearer someAccessToken',
-        },
-        body: JSON.stringify({
-          message: 'Updating somePath',
-          content: '---\ntitle: "someTitle"\ndate: someDate\ndraft: someDraft\nweight: someWeight\ntags: someTags\n---\n\nsomeFileContent',
-          sha: 'someSHA',
-        }),
-      });
-      ran = true;
-    })(PUSH_FILEEDIT('someFileContent', {
+    })(nextMock)(PUSH_FILEEDIT('someFileContent', {
       title: 'someTitle',
       draft: 'someDraft',
       date: 'someDate',
@@ -57,19 +42,39 @@ describe('fileEditLoader', () => {
       tags: 'someTags',
     }));
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(2);
+    expect(nextMock).toHaveBeenNthCalledWith(1, PUSH_FILEEDIT('someFileContent', {
+      title: 'someTitle',
+      draft: 'someDraft',
+      date: 'someDate',
+      weight: 'someWeight',
+      tags: 'someTags',
+    }));
+    expect(nextMock).toHaveBeenNthCalledWith(2, PUSHED_FILEEDIT());
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('someUrl', {
+      method: 'PUT',
+      headers: {
+        Authorization: 'Bearer someAccessToken',
+      },
+      body: JSON.stringify({
+        message: 'Updating somePath',
+        content: '---\ntitle: "someTitle"\ndate: someDate\ndraft: someDraft\nweight: someWeight\ntags: someTags\n---\n\nsomeFileContent',
+        sha: 'someSHA',
+      }),
+    });
   });
 
 
   it('skips', async () => {
-    let ran = false;
+    const mockAction = { type: 'someThingDifferent' };
+    const nextMock = jest.fn();
     await customMiddleWare({
-      getState: () => {},
-    })((action) => {
-      expect(action.type).toEqual('someThingDifferent');
-      ran = true;
-    })({ type: 'someThingDifferent' });
+      getState: () => { },
+    })(nextMock)(mockAction);
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenNthCalledWith(1, mockAction);
+    expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 });

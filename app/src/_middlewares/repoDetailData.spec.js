@@ -1,4 +1,4 @@
-import { FETCH_REPODETAILDATA } from '../_actions/REPODETAILDATA';
+import { FETCH_REPODETAILDATA, FETCHED_REPODETAILDATA } from '../_actions/REPODETAILDATA';
 
 global.fetch = jest.fn(() => Promise.resolve({
   json: () => Promise.resolve({
@@ -16,7 +16,7 @@ describe('repoDetailDataLoader', () => {
   });
 
   it('fetchesRepoData', async () => {
-    let ran = false;
+    const nextMock = jest.fn();
     await customMiddleWare({
       getState: () => ({
         authenticationState: {
@@ -31,25 +31,23 @@ describe('repoDetailDataLoader', () => {
           },
         },
       }),
-    })((action) => {
-      expect(action.type).toEqual('FETCHED_REPODETAILDATA');
-      expect(action.repoDetailData).toEqual({
-        someAcceptedResult: true,
-      });
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-      expect(global.fetch).toHaveBeenCalledWith('someUrl/somePath', {
-        headers: {
-          Authorization: 'Bearer someAccessToken',
-        },
-      });
-      ran = true;
-    })(FETCH_REPODETAILDATA('someRepoName', 'somePath'));
+    })(nextMock)(FETCH_REPODETAILDATA('someRepoName', 'somePath'));
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(2);
+    expect(nextMock).toHaveBeenNthCalledWith(1, FETCH_REPODETAILDATA('someRepoName', 'somePath'));
+    expect(nextMock).toHaveBeenNthCalledWith(2, FETCHED_REPODETAILDATA('someRepoName', 'somePath', {
+      someAcceptedResult: true,
+    }));
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('someUrl/somePath', {
+      headers: {
+        Authorization: 'Bearer someAccessToken',
+      },
+    });
   });
 
   it('fetchesRepoData with no path', async () => {
-    let ran = false;
+    const nextMock = jest.fn();
     await customMiddleWare({
       getState: () => ({
         authenticationState: {
@@ -64,32 +62,30 @@ describe('repoDetailDataLoader', () => {
           },
         },
       }),
-    })((action) => {
-      expect(action.type).toEqual('FETCHED_REPODETAILDATA');
-      expect(action.repoDetailData).toEqual({
-        someAcceptedResult: true,
-      });
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-      expect(global.fetch).toHaveBeenCalledWith('someUrl', {
-        headers: {
-          Authorization: 'Bearer someAccessToken',
-        },
-      });
-      ran = true;
-    })(FETCH_REPODETAILDATA('someRepoName', undefined));
+    })(nextMock)(FETCH_REPODETAILDATA('someRepoName', undefined));
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(2);
+    expect(nextMock).toHaveBeenNthCalledWith(1, FETCH_REPODETAILDATA('someRepoName', undefined));
+    expect(nextMock).toHaveBeenNthCalledWith(2, FETCHED_REPODETAILDATA('someRepoName', undefined, {
+      someAcceptedResult: true,
+    }));
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('someUrl', {
+      headers: {
+        Authorization: 'Bearer someAccessToken',
+      },
+    });
   });
 
   it('skips', async () => {
-    let ran = false;
+    const mockAction = { type: 'someThingDifferent' };
+    const nextMock = jest.fn();
     await customMiddleWare({
-      getState: () => {},
-    })((action) => {
-      expect(action.type).toEqual('someThingDifferent');
-      ran = true;
-    })({ type: 'someThingDifferent' });
+      getState: () => { },
+    })(nextMock)(mockAction);
 
-    expect(ran).toBe(true);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenNthCalledWith(1, mockAction);
+    expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 });
